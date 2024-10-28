@@ -1,45 +1,33 @@
 name: cd
-
 on:
   push:
     branches: [main]
-
 jobs:
   deploy:
     name: deploy
     runs-on: ubuntu-latest
-
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
     steps:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.20"
-
+          go-version: "1.23"
       - name: Check out code
         uses: actions/checkout@v3
-
       - name: Build
         run: ./scripts/buildprod.sh
-
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
-
       - name: Set up GCP
         uses: 'google-github-actions/setup-gcloud@v1'
-
       - name: Deploy image to Artifact Registry
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/boot-dev-cicd/notely-ar-repo/github-cd/notely .
-      
       - name: Install goose
         run: go install github.com/pressly/goose/v3/cmd/goose@latest
-
       - name: Migrate database
         run: ./scripts/migrateup.sh
-
       - name: 'Deploy to Cloud Run'
         run: gcloud run deploy notely --image us-central1-docker.pkg.dev/boot-dev-cicd/notely-ar-repo/github-cd/notely:latest --region us-central1 --allow-unauthenticated --project boot-dev-cicd --max-instances=4
