@@ -1,8 +1,8 @@
-# learn-cicd-starter (Notely)
+# Boot.dev CI/CI Course
 
 ![CI](https://github.com/EnsIaver/boot-dev-cicd/actions/workflows/ci/badge.svg)
 
-This repo contains the starter code for the "Notely" application for the "Learn CICD" course on [Boot.dev](https://boot.dev).
+This repository comprises the starting template, implementation and other materials created throughout the [boot.dev CI/CD course](http://boot.dev/learn/learn-ci-cd).
 
 ## Local Development
 
@@ -19,7 +19,3 @@ Run the server:
 ```bash
 go build -o notely && ./notely
 ```
-
-*This starts the server in non-database mode.* It will serve a simple webpage at `http://localhost:8000`.
-
-You do *not* need to set up a database or any interactivity on the webpage yet. Instructions for that will come later in the course!
